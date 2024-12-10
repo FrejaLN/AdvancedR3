@@ -4,13 +4,27 @@ author: "Your Name"
 format: html
 ---
 
-## Header 1
-
 ```{r setup}
 #| include: false
+library(tidyverse)
+source(here::here("R/functions.R"))
+lipidomics <- read_csv(here::here("data/lipidomics.csv"))
 ```
+
+##Basic statistics
 
 ```{r}
-# Code chunk
+lipidomics %>%
+  group_by(metabolite) %>%
+  summarise(across( # given these columns, do this action
+    value,
+    list( # give it a list, if you want it to have a name
+      mean = mean,
+      sd = sd
+    )
+  )) %>%
+  mutate(across(
+    where(is.numeric),
+    ~ round(.x, digits = 1) # to do it for all columns at once
+  ))
 ```
-
