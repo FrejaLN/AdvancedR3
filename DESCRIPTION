@@ -21,3 +21,5 @@ Suggests:
     usethis
 URL: https://github.com/FrejaLN/AdvancedR3
 BugReports: https://github.com/FrejaLN/AdvancedR3/issues
+Depends: 
+    tidyverse
