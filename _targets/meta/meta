@@ -1,0 +1,5 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+descriptive_stats|function|3cd55c952658f569|||||||||||||||
+df_stats_by_metabolite|stem|219c2b94db2784da|ce15a181d02b2e03|46db250f14f6d976|519715527||t20068.3466419577s|a2f85ca40321daf5|403|rds|local|vector|||0.24||
+file|stem|f6bf5a5688fb274f|09442fac263aded2|2c530c1562a7fbd1|1735323524|data/lipidomics.csv|t20066.5583713021s|2ec1867e6b7db575|24313|file|local|vector|||0||
+lipidomics|stem|a49d512cbd22229e|0adf46d83f39a429|f0e124423009cc2f|-1498393010||t20068.3564636234s|5efea0df906539e6|4884|rds|local|vector|||0.55||

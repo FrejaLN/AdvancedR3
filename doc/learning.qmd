@@ -14,37 +14,5 @@ lipidomics <- read_csv(here::here("data/lipidomics.csv"))
 ##Basic statistics
 
 ```{r}
-lipidomics %>%
-  group_by(metabolite) %>%
-  summarise(across( # given these columns, do this action
-    value,
-    list( # give it a list, if you want it to have a name
-      mean = mean,
-      sd = sd
-    )
-  )) %>%
-  mutate(across(
-    where(is.numeric),
-    ~ round(.x, digits = 1) # to round off for all columns at once
-  ))
-```
-
-#Make function
-
-```{r}
-descriptive_stats <- function(data) {
-  data %>% 
-    dplyr::group_by(metabolite) %>% 
-    dplyr::summarise(dplyr::across(
-        value,
-        base::list(
-            mean=mean,
-            sd=sd
-        )
-    )) %>% 
-        dplyr::mutate(dplyr::across(
-        tidyselect::where(is.numeric),
-        ~base::round(.x, digits=1)
-        ))
-}
+descriptive_stats(lipidomics)
 ```

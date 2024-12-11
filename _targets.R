@@ -27,7 +27,7 @@ tar_option_set(
   # cluster, select a controller from the {crew.cluster} package.
   # For the cloud, see plugin packages like {crew.aws.batch}.
   # The following example is a controller for Sun Grid Engine (SGE).
-  # 
+  #
   #   controller = crew.cluster::crew_controller_sge(
   #     # Number of workers that the pipeline can scale up to:
   #     workers = 10,
@@ -50,13 +50,22 @@ tar_source()
 
 # Replace the target list below with your own:
 list(
+  tar_target( #targets is located where the file is, so we dont need to use here::here
+    name = file,
+    command = "data/lipidomics.csv",
+    format = "file"
+  ), # to keep track of a file, then a path to the file
   tar_target(
-    name = data,
-    command = tibble(x = rnorm(100), y = rnorm(100))
-    # format = "qs" # Efficient storage for general data objects.
+    name = lipidomics,
+    command = readr::read_csv(file, show_col_types = FALSE)
   ),
   tar_target(
-    name = model,
-    command = coefficients(lm(y ~ x, data = data))
+    name = df_stats_by_metabolite,
+    command = descriptive_stats(lipidomics) # refers to the first object in tar_target
   )
 )
+
+#test the pipeline with targets::tar_make()
+#to visualize the targets run targets::tar_visnetwork()
+#If the data is already loaded into the pipeline and havent changes, then it will skip the line when you rerun the tar_targets
+#To check if we have changed anything use: targets::tar_outdated(), and then it will update this when you rerun the tar_targets
