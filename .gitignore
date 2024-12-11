@@ -6,3 +6,4 @@ data-raw/nmr-omics/
 .httr-oauth
 .DS_Store
 .quarto
+_targets.yaml

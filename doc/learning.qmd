@@ -5,20 +5,20 @@ format: html
 ---
 
 ```{r setup}
-#| include: false
+#|include: false #to remove code chunk from the html file
+targets::tar_config_set(store=here::here("_targets")) #look in the _targets folder instead of the doc folder for the files
 library(tidyverse)
+library(targets)
 source(here::here("R/functions.R"))
-lipidomics <- read_csv(here::here("data/lipidomics.csv"))
+lipidomics <- tar_read(lipidomics)
 ```
 
-##Basic statistics
+## Results
 
 ```{r}
-descriptive_stats(lipidomics)
+tar_read(df_stats_by_metabolite)
 ```
 
-##Figure outputs
-
 ```{r}
-plot_distributions(lipidomics)
+tar_read(fig_metabolite_distribution)
 ```

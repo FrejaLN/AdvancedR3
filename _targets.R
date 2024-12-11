@@ -5,7 +5,8 @@
 
 # Load packages required to define the pipeline:
 library(targets)
-# library(tarchetypes) # Load other packages as needed.
+library(tarchetypes) # Load other packages as needed.
+library(quarto)
 
 # Set target options:
 tar_option_set(
@@ -66,6 +67,10 @@ list(
   tar_target(
     name = fig_metabolite_distribution,
     command = plot_distributions(lipidomics)
+  ),
+  tar_quarto(
+      name = quarto_doc,
+      path = "doc/learning.qmd"
   )
 )
 
@@ -73,3 +78,5 @@ list(
 # to visualize the targets run targets::tar_visnetwork()
 # If the data is already loaded into the pipeline and havent changes, then it will skip the line when you rerun the tar_targets
 # To check if we have changed anything use: targets::tar_outdated(), and then it will update this when you rerun the tar_targets
+# Load data in and present the output as a seperate pipeline as a markdown/quarto - to enable this - go to the top and change which packages is required to load and then these are loaded each time the pipeline is run
+# use_git_ignore("_targets.yaml")
