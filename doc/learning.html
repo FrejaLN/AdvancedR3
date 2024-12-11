@@ -103,74 +103,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|include: false</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_config_set</span>(<span class="at">store=</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"_targets"</span>)) <span class="co">#look in the _targets folder instead of the doc folder for the files</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'tidyverse' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'ggplot2' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'tidyr' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'readr' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'dplyr' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'stringr' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'lubridate' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(targets)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: pakke 'targets' blev bygget under R version 4.3.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R/functions.R"</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lipidomics <span class="ot">&lt;-</span> <span class="fu">tar_read</span>(lipidomics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_read</span>(df_stats_by_metabolite)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 12 × 3
-   metabolite               value_mean value_sd
-   &lt;chr&gt;                         &lt;dbl&gt;    &lt;dbl&gt;
- 1 CDCl3 (solvent)               180       67  
- 2 Cholesterol                    18.6     11.4
- 3 FA -CH2CH2COO-                 33.6      7.8
- 4 Lipid -CH2-                   537.      61.9
- 5 Lipid CH3- 1                   98.3     73.8
- 6 Lipid CH3- 2                  168.      29.2
- 7 MUFA+PUFA                      32.9     16.1
- 8 PUFA                           30       24.1
- 9 Phosphatidycholine             31.7     20.5
-10 Phosphatidylethanolamine       10        7.6
-11 Phospholipids                   2.7      2.6
-12 TMS (interntal standard)      123      130. </code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_read</span>(df_stats_by_metabolite) <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">MeanSD =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{value_mean} ({value_sd})"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Metabolite =</span> metabolite, <span class="st">`</span><span class="at">Mean SD</span><span class="st">`</span> <span class="ot">=</span> MeanSD) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Descriptive statistics of the metabolites"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Descriptive statistics of the metabolites</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metabolite</th>
+<th style="text-align: left;">Mean SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CDCl3 (solvent)</td>
+<td style="text-align: left;">180 (67)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cholesterol</td>
+<td style="text-align: left;">18.6 (11.4)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FA -CH2CH2COO-</td>
+<td style="text-align: left;">33.6 (7.8)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lipid -CH2-</td>
+<td style="text-align: left;">536.6 (61.9)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lipid CH3- 1</td>
+<td style="text-align: left;">98.3 (73.8)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lipid CH3- 2</td>
+<td style="text-align: left;">168.2 (29.2)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MUFA+PUFA</td>
+<td style="text-align: left;">32.9 (16.1)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUFA</td>
+<td style="text-align: left;">30 (24.1)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Phosphatidycholine</td>
+<td style="text-align: left;">31.7 (20.5)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Phosphatidylethanolamine</td>
+<td style="text-align: left;">10 (7.6)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Phospholipids</td>
+<td style="text-align: left;">2.7 (2.6)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TMS (interntal standard)</td>
+<td style="text-align: left;">123 (130.4)</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_read</span>(fig_metabolite_distribution)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_read</span>(fig_metabolite_distribution)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
