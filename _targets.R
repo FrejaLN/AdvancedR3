@@ -50,7 +50,7 @@ tar_source()
 
 # Replace the target list below with your own:
 list(
-  tar_target( #targets is located where the file is, so we dont need to use here::here
+  tar_target( # targets is located where the file is, so we dont need to use here::here
     name = file,
     command = "data/lipidomics.csv",
     format = "file"
@@ -62,10 +62,14 @@ list(
   tar_target(
     name = df_stats_by_metabolite,
     command = descriptive_stats(lipidomics) # refers to the first object in tar_target
+  ),
+  tar_target(
+    name = fig_metabolite_distribution,
+    command = plot_distributions(lipidomics)
   )
 )
 
-#test the pipeline with targets::tar_make()
-#to visualize the targets run targets::tar_visnetwork()
-#If the data is already loaded into the pipeline and havent changes, then it will skip the line when you rerun the tar_targets
-#To check if we have changed anything use: targets::tar_outdated(), and then it will update this when you rerun the tar_targets
+# test the pipeline with targets::tar_make()
+# to visualize the targets run targets::tar_visnetwork()
+# If the data is already loaded into the pipeline and havent changes, then it will skip the line when you rerun the tar_targets
+# To check if we have changed anything use: targets::tar_outdated(), and then it will update this when you rerun the tar_targets
