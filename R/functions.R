@@ -1,22 +1,23 @@
-#' Title
+#' Descriptive statistics
 #'
-#' @param dataframe
+#' @param data dataframe
 #'
 #' @return “A data.frame/tibble.”
+#'
 descriptive_stats <- function(data) {
-    data %>%
-        dplyr::group_by(metabolite) %>%
-        dplyr::summarise(dplyr::across(
-            value,
-            base::list(
-                mean=mean,
-                sd=sd
-            )
-        )) %>%
-        dplyr::mutate(dplyr::across(
-            tidyselect::where(is.numeric),
-            ~base::round(.x, digits=1)
-        ))
+  data %>%
+    dplyr::group_by(metabolite) %>%
+    dplyr::summarise(dplyr::across(
+      value,
+      base::list(
+        mean = mean,
+        sd = sd
+      )
+    )) %>%
+    dplyr::mutate(dplyr::across(
+      tidyselect::where(is.numeric),
+      ~ base::round(.x, digits = 1)
+    ))
 }
 
 
@@ -27,8 +28,8 @@ descriptive_stats <- function(data) {
 #' @return A ggplot2 graph.
 #'
 plot_distributions <- function(data) {
-    data |>
-        ggplot2::ggplot(ggplot2::aes(x = value)) +
-        ggplot2::geom_histogram() +
-        ggplot2::facet_wrap(ggplot2::vars(metabolite), scales = "free")
+  data |>
+    ggplot2::ggplot(ggplot2::aes(x = value)) +
+    ggplot2::geom_histogram() +
+    ggplot2::facet_wrap(ggplot2::vars(metabolite), scales = "free")
 }

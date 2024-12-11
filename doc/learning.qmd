@@ -9,6 +9,7 @@ format: html
 targets::tar_config_set(store = here::here("_targets")) # look in the _targets folder instead of the doc folder for the files
 library(tidyverse)
 library(targets)
+library(tidymodels)
 source(here::here("R/functions.R"))
 lipidomics <- tar_read(lipidomics)
 ```
@@ -18,8 +19,8 @@ lipidomics <- tar_read(lipidomics)
 ```{r}
 tar_read(df_stats_by_metabolite) %>%
   mutate(MeanSD = glue::glue("{value_mean} ({value_sd})")) %>%
-  select(Metabolite = metabolite, `Mean SD` = MeanSD) %>% 
-    knitr::kable(caption = "Descriptive statistics of the metabolites")
+  select(Metabolite = metabolite, `Mean SD` = MeanSD) %>%
+  knitr::kable(caption = "Descriptive statistics of the metabolites")
 ```
 
 ```{r}
