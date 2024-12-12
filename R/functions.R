@@ -141,3 +141,39 @@ generate_model_results <- function(data) {
     parsnip::fit(data) %>%
     tidy_model_output()
 }
+
+
+#' Function to calculate the model estimates
+#'
+#' @param data The lipidomics dataset
+#'
+#' @return A dataframe
+#'
+calculate_estimates <- function(data) {
+  data %>%
+    split_by_metabolite() %>%
+    purrr::map(generate_model_results) %>% # Add the function and apply to all datasets we just split
+    purrr::list_rbind() %>% # to combine datasets on rows
+    dplyr::filter(stringr::str_detect(term, "metabolite_")) # Filter dataset to only keep metabolites
+}
+
+
+#' Calculate the estimates for the model for each metabolite
+#'
+#' @param data The lipidomics dataset
+#'
+#' @return A dataframe
+#'
+calculate_estimates <- function(data) {
+  model_estimates <- data %>%
+    split_by_metabolite() %>%
+    purrr::map(generate_model_results) %>%
+    purrr::list_rbind() %>%
+    dplyr::filter(stringr::str_detect(term, "metabolite_"))
+  data %>%
+    dplyr::mutate(term = metabolite) %>%
+    column_values_to_snake_case(term) %>%
+    dplyr::mutate(term = str_c("metabolite_", term)) %>%
+    dplyr::distinct(metabolite, term) %>% # to remove duplicate metabolites and terms |>
+    dplyr::right_join(model_estimates, by = "term")
+}

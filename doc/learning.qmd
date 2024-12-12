@@ -36,9 +36,18 @@ lipidomics_wide
 ## Running multiple models
 
 ```{r}
-lipidomics %>%
-  split_by_metabolite() %>%
-  map(generate_model_results) %>% # Add the function and apply to all datasets we just split
-  list_rbind() %>% # to combine datasets on rows
-  filter(str_detect(term, "metabolite_")) # Filter dataset to only keep metabolites
+model_estimates <- lipidomics %>%
+  calculate_estimates()
+```
+
+## Fixing metabolites names
+
+```{r}
+lipidomics %>% 
+    select(metabolite) %>% 
+    mutate(term=metabolite) %>% 
+    column_values_to_snake_case(term) %>% 
+    mutate(term=str_c("metabolite_", term)) %>% 
+    distinct(metabolite, term) %>% #to remove duplicate metabolites and terms
+    right_join(model_estimates, by ="term")
 ```
