@@ -49,7 +49,6 @@ column_values_to_snake_case <-
 
 
 
-
 #' Convert the metabolite long format into a wider one
 #'
 #' @param data The lipidomics dataset
@@ -72,7 +71,7 @@ metabolites_to_wider <- function(data) {
 #' @param data The lipidomics dataset
 #' @param metabolite_variable The column of the metabolite variable
 #'
-#' @return Dataframe
+#' @return Recipe object
 #'
 create_recipe_spec <- function(data, metabolite_variable) {
   recipes::recipe(data) %>%
